@@ -64,6 +64,3 @@ JOIN Atendimentos ON Pacientes.id = Atendimentos.paciente_id
 JOIN eventos_atendimento ON Atendimentos.id = eventos_atendimento.atendimento_id
 JOIN Medicoes ON eventos_atendimento.id = Medicoes.medicoes_do_evento
 WHERE eventos_atendimento.tipo_evento = 'Triagem' AND Medicoes.tipo_medicao = 'Glicemia Capilar'
-
-
-     
