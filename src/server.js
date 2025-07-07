@@ -55,6 +55,35 @@ app.get('/pacientes/:id', (req, res) => {
   });
 });
 
+//Rota para TODOS os atendimentos
+app.get('/atendimentos', (req, res) => {
+  const sqlQuery = `SELECT * FROM Atendimentos;`;
+
+  connection.query(sqlQuery, (err, results) => {
+    if (err) {
+      console.error("Erro ao buscar os Atendimentos: ", err);
+      return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+    return res.json(results);
+  })
+})
+
+//Rota para os Atendimentos identificados por ID
+app.get('/atendimentos/:id', (req, res) => {
+  const atendimentosID = req.params.id;
+  const sqlQuery = `SELECT * FROM Atendimentos WHERE id = ?;`;
+
+  connection.query(sqlQuery, [atendimentosID], (err, results) => {
+    if (err) {
+      console.error("Error ao buscar o Atendimento por ID: ", err);
+      return res.status(500).json({ error: "Erro interno do servidor." });
+    }
+    if (results.length === 0){
+      return res.status(404).json({ message: "Atendimento não encontrado." });
+    }
+    return res.json(results[0]);
+  })
+})
 
 //Inicializando o servidor
 app.listen(PORT, () => {
