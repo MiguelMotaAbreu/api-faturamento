@@ -146,6 +146,25 @@ app.put('/pacientes/:id', (req,res) => {
   })
 })
 
+app.delete('/pacientes/:id', (req, res) => {
+  const {id} = req.params
+  //Sem necessidade de um req.body pois o 'app.delete' apaga uma linha inteira
+  const sqlQuery = `DELETE FROM Pacientes WHERE id = ?;`;
+  
+  connection.query(sqlQuery, [id], (err, results) => {
+    if (err){
+      console.error("Não foi possível deletar o paciente: ", err)
+      return res.status(500).json({error: "Erro interno do servidor." });
+    }
+    if (results.affectedRows === 0){
+      return res.status(404).json({message: 'O cadastro escolhido para deletar não foi encontrado.'});
+    }
+    if (results.affectedRows > 0){ //Esse if é opcional já que os erros foram filtrados anteriormente nas linhas de cima.
+      return res.status(204).send()
+    }
+  })
+})
+
 //Inicializando o servidor
 app.listen(PORT, () => {
   console.log(`API de Faturamento rodando em http://localhost:${PORT}`);
