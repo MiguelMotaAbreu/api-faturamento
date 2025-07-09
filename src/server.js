@@ -115,6 +115,37 @@ app.post('/pacientes', (req, res) => {
     })
 })
 
+//Criando rotas para atualizações de cadastros já existentes no banco de dados (PUT).
+//O PUT precisa de um ID específico para saber qual cadastro implementar as mudanças, ele não pode mudar uma tabela inteira de uma vez.
+app.put('/pacientes/:id', (req,res) => {
+  //Dessa vez, definiremos como 'id', a forma utilizada acima em 'pacienteID', também funciona. No entanto, declarar ela com o mesmo nome, evita confusões e erros de atualização desnecessários
+  const {id} = req.params;
+  const {nome_completo, data_nascimento, cpf} = req.body //Corpo da nossa requisição
+
+  if(!nome_completo || !cpf){
+    return res.status(400).json({message: 'Nome completo e CPF são obrigatórios.'});
+  }
+  const sqlQuery = `UPDATE Pacientes SET nome_completo = ?, data_nascimento = ?, cpf = ? WHERE id = ?;`;
+
+  //A ordem para estabelecer conexão e atualizar o cadastro deve seguir a mesma ordem do corpo da requisição!
+  connection.query(sqlQuery, [nome_completo, data_nascimento, cpf, id], (err, results) => {
+    if (err){
+      console.error("Não foi possível atualizar o paciente: ", err);
+      //Checando aqui também se houve tentativa de cadastro de um CPF já cadastrado.
+       if (err.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({ message: 'Este CPF já pertence a outro paciente.'});
+    }
+    return res.status(500).json({error: "Erro interno do servidor." });
+  }
+  //Como o 'results' retorna uma devolutiva diferente, não sendo simplesmente os dados modificados. Ele nos retorna as linhas do banco de dados que foram afetadas pelas modificações feitas pelo PUT/UPDATE acima.
+  if (results.affectedRows === 0){
+    //Caso não encontremos as linhas modificadas (sejam equivalentes a 0), isso significa que a alteração falhou ou que simplesmente o UPDATE falhou em nos retornar os dados
+    return res.status(404).json({message: 'Paciente não encontrado.'});
+  }
+  return res.status(200).json({message: 'Paciente atualizado com sucesso.', id: id})
+  })
+})
+
 //Inicializando o servidor
 app.listen(PORT, () => {
   console.log(`API de Faturamento rodando em http://localhost:${PORT}`);
