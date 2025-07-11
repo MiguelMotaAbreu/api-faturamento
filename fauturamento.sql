@@ -13,7 +13,7 @@ CREATE TABLE Atendimentos (
 	paciente_id INT NOT NULL,
     data_hora_entrada DATETIME NOT NULL,
     data_hora_saida DATETIME NOT NULL,
-    tipo_atendimento VARCHAR(100),
+    tipo_atendimento VARCHAR(100) NOT NULL,
     FOREIGN KEY (paciente_id) REFERENCES Pacientes(id)
 );
 
