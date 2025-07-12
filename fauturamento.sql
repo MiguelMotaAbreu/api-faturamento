@@ -12,9 +12,9 @@ CREATE TABLE Atendimentos (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	paciente_id INT NOT NULL,
     data_hora_entrada DATETIME NOT NULL,
-    data_hora_saida DATETIME NOT NULL,
+    data_hora_saida DATETIME,
     tipo_atendimento VARCHAR(100) NOT NULL,
-    FOREIGN KEY (paciente_id) REFERENCES Pacientes(id)
+    FOREIGN KEY (paciente_id) REFERENCES Pacientes(id) ON DELETE CASCADE
 );
 
 CREATE TABLE eventos_atendimento (
@@ -23,7 +23,7 @@ CREATE TABLE eventos_atendimento (
     tipo_evento VARCHAR(100) NOT NULL,
     descricao TEXT NOT NULL,
     data_hora_evento DATETIME NOT NULL,
-	FOREIGN KEY (atendimento_id) REFERENCES Atendimentos(id)
+	FOREIGN KEY (atendimento_id) REFERENCES Atendimentos(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Medicoes (
@@ -31,7 +31,7 @@ CREATE TABLE Medicoes (
     medicoes_do_evento INT NOT NULL,
     tipo_medicao VARCHAR(100) NOT NULL,
     valor_medicao VARCHAR(100) NOT NULL,
-    FOREIGN KEY (medicoes_do_evento) REFERENCES eventos_atendimento(id)
+    FOREIGN KEY (medicoes_do_evento) REFERENCES eventos_atendimento(id) ON DELETE CASCADE
 );
 
 INSERT INTO Pacientes (nome_completo, data_nascimento, cpf) 
