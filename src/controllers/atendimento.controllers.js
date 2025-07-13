@@ -22,15 +22,8 @@ const getAtendimentosById = (req, res) => {
 };
 
 const createAtendimento = (req, res) => {
-    req.body = { paciente_id, data_hora_entrada, data_hora_saida, tipo_atendimento }
+    const { paciente_id, data_hora_entrada, data_hora_saida, tipo_atendimento } = req.body;
     if (!paciente_id || !data_hora_entrada ||!tipo_atendimento) return res.status(400).json({ message: 'O id do paciente, a data e hora em que ele entrou e o tipo de atendimento são obrigatórios para registrar um novo Atendimento.' });
-
-    //Verificação de possíveis duplicidades no momento de cadastro de um atendimento
-    const selectSQLData = "SELECT data_hora_entrada FROM Atendimentos WHERE id =?;";
-    const selectSQLTipoAtendimento = "SELECT tipo_atendimento FROM Atendimentos WHERE id = ?;";
-    if (selectSQLData === data_hora_entrada || selectSQLTipoAtendimento === tipo_atendimento) {
-        return res.status(400).json({ message: 'Você não pode cadastrar um atendimento para um paciente em específico, que seja na mesma data e hora e que já tenha recebido o mesmo tipo de tratamento em respectivo momento.' });
-    }
 
     const query = "INSERT INTO Atendimentos (paciente_id, data_hora_entrada, data_hora_saida, tipo_atendimento) VALUES (?, ?, ?, ?);";
     connection.query(query, [paciente_id, data_hora_entrada, data_hora_saida, tipo_atendimento], (err, results) => {
@@ -55,7 +48,7 @@ const updateAtendimento = (req, res) => {
 const deleteAtendimento = (req, res) => {
     const {id} = req.params;
     connection.query("DELETE FROM Atendimentos WHERE id = ?;", [id], (err, results) => {
-        if (err) return res.status(500).json({error: message.err});
+        if (err) return res.status(500).json({error: err.message});
         if (results.affectedRows === 0) return res.status(404).json({ message: 'Atendimento não encontrado.' }); //Lembremos que o DELETE, assim como o UPDATE, retorna um objeto de linhas que foram afetadas por sua ação
         return res.status(204).send();
     });
