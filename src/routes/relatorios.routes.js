@@ -3,6 +3,6 @@ const router = express.Router();
 
 const relatoriosController = require('../controllers/relatorio.controllers');
 
-router.get('/pacientes-glicemia-triagem', relatoriosController.getPacientesComGlicemia);
+router.get('/procedimentos', relatoriosController.getRelatoriodeProcedimentos);
 
 module.exports = router;
