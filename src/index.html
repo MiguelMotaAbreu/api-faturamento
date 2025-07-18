@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Relatórios Médicos</title>
+    <!--Relacionando o futuro arquivo de estilização, 'main.css', com nosso index-->
+    <link rel="stylesheet" href="styles/main.css">
+    <!--Aqui, o comportamento da página se torna possível, graças a conexão com o backend. O parâmetro 'defer' é utilizado para manter o carregamento da página html mesmo que o app.js ainda não tenha sido baixado, garantindo melhor funcionamento visual e prático da página.-->
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    
+    <header>
+        <h1>G&A - Relatórios de Procedimentos Médicos</h1>
+    </header>
+
+    <main>
+        <section id="filtros-container">
+            <h2>Filtros</h2>
+            <!--Devemos usar form pois agrupa alguns conteúdos que devem ser processados pela nossa API, exatamente o que precisamos para os filtros, é semanticamente correto.-->
+            <form>
+                <div class="filtro-item">
+                    <!--Estabelecendo a 'legenda' para o botão de filtrar eventos e colocando as opções possíveis para os eventos, fases do atendimento.-->
+                    <label for="filtro-evento">Fase Atendimento:</label>
+                    <select name="evento" id="filtro-evento">
+                        <!--A linha abaixo cai como uma boa decisão de UX, para manter a interface amigável e não apenas em branco por não ter nada selecionado-->
+                        <option value="" disabled selected>Selecione uma fase</option>
+                        <option value="Triagem">Triagem</option>
+                        <option value="Consulta Medica">Consulta Médica</option>
+                    </select>
+                </div>
+                <div class="filtro-item">
+                    <label for="filtro-medicao">Medição Feita:</label>
+                    <select name="medicao" id="filtro-medicao">
+                        <option value="" disabled selected>Selecione uma medição</option>
+                        <option value="Glicemia Capilar">Glicemia Capilar</option>
+                        <option value="Pressao Arterial">Pressão Arterial</option>
+                    </select>
+                </div>
+                <!--Botão para confirmar a pesquisa, idealmente funcionando somente após a seleção de um filtro, caso contrário, emitindo a tela, um aviso de que todos os relatórios do sistema serão exibidos.-->
+                <button type="button" id="btn-buscar">Buscar</button>
+            </form>
+        </section>
+
+        <section id="resultados-container">
+            <h2>Resultados</h2>
+            <!--Criando a tabela que exibirá o resultado da pesquisa e estabelecendo os nomes nas colunas-->
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome do Paciente</th>
+                        <th>CPF</th>
+                        <th>Nº Atendimento</th>
+                        <th>Procedimento</th>
+                        <th>Valor</th>
+                        <th>Data do Evento</th>
+                    </tr>
+                </thead>
+                <!--Relacionando o corpo da tabela a um id, posteriormente útil para a exportação de relatórios-->
+                <tbody id="tabela-resultados">
+                </tbody>
+            </table>
+            <!--Resultado de segurança para manter a interface amigável e não exibindo erros ao usuário final, concluindo apenas que não foi encontrado nenhum resultado dentro daqueles parâmetros
+            Vale ressaltar que a opção de puxar todos os relatórios terá uma opção própria nos filtros, evitando erros com o deselected.-->
+            <p id="sem-resultados" class="hidden">Nenhum resultado encontrado.</p>
+        </section>
+    </main>
+
+</body>
+</html>
