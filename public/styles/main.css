@@ -1,0 +1,60 @@
+/* Formatação padrão no início para evitar conflitos com diferentes resoluções e navegadores*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*Definição de fonte padrão e cores presentes em todas as partes do corpo da página, ambos "elementos principais"*/
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+body {
+    /*Outras definições do body, tipo de "caixa" a ser usada para guardar os elementos, a direção que a "caixa", em específico a de tipo "flex", se coloca e detalhes de orientação em relação a posição */
+    min-height: 100vh; /* Garante que o conteúdo do corpo ocupe a tela inteira */
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+}
+
+main {
+    width: 90%; /*Área máxima que o conteúdo pode ocupar em relação a "caixa"*/
+    max-width: 800px; /* Define uma largura máxima para não ficar muito largo em telas grandes */
+    margin-top: 20px; /*Definindo grossura das margens*/
+}
+
+/* Defininindo aspectos do botão (cor, margem, tamanho de texto...) */
+#btn-buscar {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* Acrescentando animação "hover", padrão de ser usada quando o cursor passa sobre o elemento em específico" */
+#btn-buscar:hover {
+    background-color: #0056b3;
+}
+
+/* Aspectos da tabela */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Torna único a borda de uma célula com a de baixo, melhor dizendo, a borda superior da célula 2 é a mesma borda inferior da célula 1 */
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+/* Cores da tabela */
+thead {
+    background-color: #333;
+    color: white;
+}
