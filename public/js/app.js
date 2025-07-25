@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     const btnBuscar = document.getElementById('btn-buscar');
     const tabelaResultados = document.getElementById('tabela-resultados');
     const msgSemResultados = document.getElementById('sem-resultados');
+    const loadingSpinner = document.getElementById('loading-spinner');
 
     console.log('Elementos relacionados:', {
         filtroEvento,
@@ -47,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () =>{
         }
         const urlFinal = `${urlBase}?${params.toString()}`;
 
+        //Faz reaparecer o botão, tirando sua classe "hidden", limpa a tabela por questões de segurança com o código a seguir, e esconde a mensagem de sem resultados, preparando assim todos os cenários da maneira correta para pesquisar sem problemas dentro do BD.
+        loadingSpinner.classList.remove('hidden');
+        tabelaResultados.innerHTML = '';
+        msgSemResultados.classList.add('hidden');
+
         //Elaborando o caminho 'feliz', onde tudo é executado corretamente
         try {
             //Guardando o status de resposta do mensageiro 'fetch' com a nossa API, usando a URL como endereço para buscar a info
@@ -64,7 +70,13 @@ document.addEventListener('DOMContentLoaded', () =>{
         //Caso algo saia do caminho 'feliz'
         catch (error) {
             console.error('Houve um problema coma a requisição fetch: ', error);
-        }
+            msgSemResultados.textContent = 'Erro ao buscar dados. Tente novamente.';
+            //Trazendo à luz a mensagem de erro, tirando a classe "hidden"
+            msgSemResultados.classList.remove('hidden');
+    } finally {
+        // 4. O bloco 'finally' SEMPRE executa. Ou seja, sempre a classe de "esconder" vai ser adicionada ao elemento que demonstra o carregamento
+        loadingSpinner.classList.add('hidden');
+    }
 
     }
     function renderizarTabelas(dados){

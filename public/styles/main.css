@@ -58,3 +58,16 @@ thead {
     background-color: #333;
     color: white;
 }
+/* Estilização do botão de retorno da requisição feita pelo usuário (o padrão, fonte, posição do texto, da caixa etc.) */
+#loading-spinner {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    font-style: italic;
+    color: #555;
+}
+
+/* Criando uma classe para utilizarmos no app.js, que servirá para esconder o botão quando a requisição ainda não tiver sido iniciada e quando for concluída */
+.hidden {
+    display: none !important;
+}
